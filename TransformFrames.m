@@ -1,4 +1,6 @@
 function [transformed_frames] = TransformFrames(video, start_frame, end_frame)
+    tic;
+    %% Load Video as frames
     if ~exist('start_frame','var')
       start_frame = 0;
     end
@@ -12,12 +14,16 @@ function [transformed_frames] = TransformFrames(video, start_frame, end_frame)
         readFrame(video);
         if frame_count >= start_frame && ((frame_count <= end_frame) || (end_frame == 0))
             curr_count = curr_count + 1;
-            frame_stack(:,:,curr_count) = rgb2gray(readFrame(video));
+%             frame_stack(:,:,curr_count) = rgb2gray(readFrame(video));
+            frame_stack(:,:,curr_count) = readFrame(video);
         elseif frame_count > end_frame
             break
         end
     end
-
+    disp('TransformFrames: Stage 1 complete. Frames Loaded')
+    toc; tic;
+    
+    %% Find Affine Transformations between Frames
     [optimizer, metric] = imregconfig('monomodal');
     optimizer.MaximumStepLength = 0.01;
     optimizer.MaximumIterations = 100;
@@ -27,8 +33,11 @@ function [transformed_frames] = TransformFrames(video, start_frame, end_frame)
             frame_stack(:,:,iframe), ...
             frame_stack(:,:,iframe + 1), ...
             'affine', optimizer, metric);
-        iframe;
     end
+    disp('TransformFrames: Stage 2 complete. Affine Transformations between Frames found')
+    toc; tic;
+    
+    %% Transform imported Images
     for iframe = 1 : size(frame_stack, 3)
         i_addframe = iframe;
         while i_addframe < size(frame_stack, 3)
@@ -38,10 +47,9 @@ function [transformed_frames] = TransformFrames(video, start_frame, end_frame)
                 'OutputView',imref2d(size(frame_stack(:,:,iframe + 1))));
             i_addframe = i_addframe + 1;
         end
-%         transformed_frames(iframe).img = frame_stack(:,:,iframe);
     end
-    
-
+    disp('TransformFrames: Stage 3 complete. Images transformed.')
+    toc;
 %     for iframe = 1 : size(transformed_frames)
 %         subplot(1,2,1)
 %         imshow(frame_stack(:,:,iframe), []);
