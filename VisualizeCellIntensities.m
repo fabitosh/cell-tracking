@@ -1,7 +1,7 @@
 function [] = VisualizeCellIntensities(s)
     % Struct of shape: (blob, frame)
     for blob = 1:length(s)
-        if [s(blob,:).Mean] > 30
+        if [s(blob,:).Mean] > -5
             plot([s(blob,:).Mean], ':'); hold on
         end
     end

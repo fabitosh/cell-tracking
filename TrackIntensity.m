@@ -19,14 +19,14 @@ TF_reference = "PreviousFrame";
 [tfFrames1, tf1] = TransformFrames(frames, optimizer, metric, TF_reference);
 
 [optimizer2, metric2] = imregconfig('monomodal');
-optimizer2.MaximumStepLength = 0.03;
+optimizer2.MaximumStepLength = 0.01;
 optimizer2.MaximumIterations = 100;
 TF_reference = "FirstFrame";
 [tfFrames2, tf2] = TransformFrames(tfFrames1, optimizer2, metric2, TF_reference);
 
 %% Save visualized result movie
-VisualizePipeline(frames, mask, tfFrames1, tfFrames2, char(join(['Check_',experimentName,'.avi'], '')));
+VisualizePipeline(frames, mask, tfFrames1, tfFrames2, char(join(['Check_',experimentName,'_Stage2MaxSL005FF.avi'], '')));
 
 %% Compute and plot results
-cellIntensities = LogMaskIntensities(mask, tfFrames1);
+cellIntensities = LogMaskIntensities(mask, tfFrames2);
 VisualizeCellIntensities(cellIntensities)
