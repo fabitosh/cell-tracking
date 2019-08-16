@@ -1,4 +1,5 @@
 function [] = VisualizePipeline(original_frames, mask, transformed_frames, transformed_frames2, name)
+    tic;
     %% Create and save video
     video = VideoWriter(name); %create the video object
     open(video); %open the file for writing
@@ -8,4 +9,5 @@ function [] = VisualizePipeline(original_frames, mask, transformed_frames, trans
     end
     close(video); %close the file
     disp('Video saved');
+    toc;
 end

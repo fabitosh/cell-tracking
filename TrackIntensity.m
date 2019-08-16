@@ -1,5 +1,6 @@
 %Convert .tf8 to regular file formats
 %Loop over folder
+
 %% Load Raw Data
 experimentName = "08.01.2019_1_hTC_P268_p8_d5_+AA_S2";
 cellcore_image = imread(join([experimentName,'__1.tif'], ""));
@@ -24,8 +25,8 @@ TF_reference = "FirstFrame";
 [tfFrames2, tf2] = TransformFrames(tfFrames1, optimizer2, metric2, TF_reference);
 
 %% Save visualized result movie
-VisualizePipeline(frames, mask, tfFrames, tfFrames2, char(join(['Check_',experimentName,'.avi'], '')));
+VisualizePipeline(frames, mask, tfFrames1, tfFrames2, char(join(['Check_',experimentName,'.avi'], '')));
 
 %% Compute and plot results
-cellIntensities = LogMaskIntensities(mask, tfFrames);
+cellIntensities = LogMaskIntensities(mask, tfFrames1);
 VisualizeCellIntensities(cellIntensities)
