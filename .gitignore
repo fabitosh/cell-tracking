@@ -23,3 +23,5 @@
 # Movies, Images and .mat Files #
 *.tf8
 *.mat
+*.tif
+*.avi
