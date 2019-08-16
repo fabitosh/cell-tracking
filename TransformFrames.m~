@@ -1,5 +1,5 @@
 function [transformed_frames, tf] = TransformFrames(frames, optimizer, metric, tfReference)   
-    tic;
+    
     %% Handle different inptus for tfReference
     if tfReference == "FirstFrame"
         ref = 1;
@@ -7,7 +7,7 @@ function [transformed_frames, tf] = TransformFrames(frames, optimizer, metric, t
     if ~exist('tfReference','var')
         ref = 1;
     end
-
+    
     %% Find Affine Transformations between Frames
     for ii = 1 : length(frames)-1
         if tfReference == "PreviousFrame"

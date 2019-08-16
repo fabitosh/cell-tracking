@@ -42,7 +42,7 @@ function [mask] = CreateMask(input_image, perform_watershed)
                     'MaximumCount', 2000, ...
                     'Connectivity', 4);
     centroids = hblob(mask);
-    numBlobs = size(centroids,1)
+    numBlobs = size(centroids,1);
     %Display result
 %     subplot(1,2,1)
 %     imshow(nuclei_im, []); hold on
@@ -50,6 +50,6 @@ function [mask] = CreateMask(input_image, perform_watershed)
 %     subplot(1,2,2)
 %     imshow(mask, []); hold on
 %     scatter(centroids(:,1), centroids(:,2), 20,'+'); hold off
-    disp('CreateMask() finished')
+    disp(['CreateMask() finished with ', num2str(numBlobs), ' Blobs'])
 end
 

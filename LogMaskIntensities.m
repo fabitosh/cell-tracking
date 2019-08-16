@@ -1,6 +1,6 @@
 function [cellIntensities] = LogMaskIntensities(mask, frames)
     cellIntensities = [];
-    for f = 1 : numel(frames)
+    for f = 2 : numel(frames)
         s = regionprops(mask, frames(f).img,{'Centroid','PixelValues','BoundingBox'});
         imshow(frames(f).img)
         title('Standard Deviation of Regions')
