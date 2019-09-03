@@ -1,4 +1,4 @@
-function [frames] = GetFrames(video, start_frame, end_frame)
+function [frames] = getFrames(video, start_frame, end_frame)
     tic;
     %% Load Video as frames
     if ~exist('start_frame','var')

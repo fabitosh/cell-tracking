@@ -7,6 +7,8 @@ experimentName = "08.01.2019_1_hTC_P268_p8_d5_+AA_S2_ds";
 cellcore_image = imread(join([experimentName,'__1.tif'], ""));
 video = VideoReader(join([experimentName,'__2.avi'], "")); 
 
+
+
 %% Create Masks and get Frames
 mask = createMask(cellcore_image, true);
 % Optional ToDo: Detect not-changing frames before action happens

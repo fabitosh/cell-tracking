@@ -1,4 +1,4 @@
-function [transformed_frames, tf] = TransformFrames(frames, optimizer, metric, tfReference)   
+function [transformed_frames, tf] = transformFrames(frames, optimizer, metric, tfReference)   
     tic;
     %% Handle different inptus for tfReference
     if tfReference == "FirstFrame"

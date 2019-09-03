@@ -1,4 +1,4 @@
-function [] = VisualizeCellIntensities(s)
+function visualizeCellIntensities(s)
     % Struct of shape: (blob, frame)
     for blob = 1:length(s)
         if [s(blob,:).Mean] > -5

@@ -1,4 +1,4 @@
-function [cellIntensities] = LogMaskIntensities(mask, frames)
+function [cellIntensities] = logMaskIntensities(mask, frames)
     cellIntensities = [];
     for f = 2 : numel(frames)
         s = regionprops(mask, frames(f).img,{'Centroid','PixelValues','BoundingBox'});
