@@ -2,12 +2,32 @@
 %Loop over folder
 
 %% Load Raw Data
-experimentName = "08.01.2019_1_hTC_P268_p8_d5_+AA_S2_ds";
+experimentName = "08.01.2019_1_hTC_P268_p8_d5_+AA_S2";
+
+% For tif and avi files
 % experimentName = "p7d5S1";
 cellcore_image = imread(join([experimentName,'__1.tif'], ""));
 video = VideoReader(join([experimentName,'__2.avi'], "")); 
 
+% Import tf8
+path = "/Users/fabiomeier/Documents/MATLAB/CellTracking/datastack1/";
+rowHeadings = {'img', 'info'};
+filepath = char(join([path, experimentName, '__1.tf8'], ''));
+cellcore = bfopen(filepath);
+cellcore = cellcore{1, 1};
+cellcore = cell2struct(cellcore, rowHeadings, 2);
+filepath = char(join([path, experimentName, '__2.tf8'], ''));
+tf8frames = bfopen(filepath);
+tf8frames = tf8frames{1,1};
+tf8frames = cell2struct(tf8frames, rowHeadings, 2);
 
+%% Downscale Images
+cellcore_ds = imresize(cellcore.img, 0.5);
+L = length(tf8frames);
+tf8frames_ds = struct();
+for ii = 1:L
+    tf8frames_ds(ii).img = imresize(tf8frames(ii).img, 0.5);
+end
 
 %% Create Masks and get Frames
 mask = createMask(cellcore_image, true);
