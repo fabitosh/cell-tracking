@@ -43,7 +43,7 @@ mask = createMask(cellcore_image, scaling_factor, false);
 [optimizer, metric] = imregconfig('monomodal');
 optimizer.MaximumStepLength = 0.01;
 optimizer.MaximumIterations = 100;
-TF_reference = "PreviousFrame"; 
+TF_reference = "FirstFrame"; 
 [tfFrames1, tf1] = transformFrames(frames, optimizer, metric, TF_reference);
 
 [optimizer2, metric2] = imregconfig('monomodal');
@@ -53,7 +53,7 @@ TF_reference = "FirstFrame";
 [tfFrames2, tf2] = transformFrames(tfFrames1, optimizer2, metric2, TF_reference);
 
 %% Save visualized result movie
-videoname = char(join(['Check_',experimentName,'_test2'], ''));
+videoname = char(join(['Check_',experimentName,'_test'], ''));
 visualizePipeline(frames, mask, tfFrames1, tfFrames2, videoname);
 
 %% Compute and plot results

@@ -1,6 +1,8 @@
-function [transformed_frames, tf] = transformFrames(frames, optimizer, metric, tfReference)   
-    tic;
+function [transformed_frames, tf] = transformFrames(frames, ...
+                                                    optimizer, metric, ...
+                                                    tfReference)   
     %% Handle different inptus for tfReference
+    tic;
     if tfReference == "FirstFrame"
         ref = 1;
     end
@@ -19,7 +21,8 @@ function [transformed_frames, tf] = transformFrames(frames, optimizer, metric, t
                 frames(ref).img, ...
             'affine', optimizer, metric);
     end
-    disp('TransformFrames: Stage 1 complete. Affine Transformations between Frames found')
+    disp('TransformFrames: Stage 1 complete.') 
+    disp('Affine Transformations between Frames found')
     toc; tic;
     
     %% Transform imported Images
