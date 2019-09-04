@@ -1,0 +1,17 @@
+function visualizePipeline(original_frames, mask, transformed_frames, transformed_frames2, name)
+    tic;
+    %% Create and save video
+    video = VideoWriter(name); %create the video object
+    open(video); %open the file for writing
+    for ii = 1:length(original_frames)
+        originalimg = imread(original_frames(ii).img);
+        tf1img = imread(transformed_frames(ii).img);
+        tf2img = imread(transformed_frames2(ii).img);
+        maskedtf2 = imread(labeloverlay(transformed_frames2(ii).img, mask));
+        multi = cat({, , , }, 'GridSize', [2 2]);
+        writeVideo(video, tile); %write the image to file
+    end
+    close(video); %close the file
+    disp('Video saved');
+    toc;
+end
