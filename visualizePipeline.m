@@ -22,7 +22,7 @@ function visualizePipeline(original_frames, mask, transformed_frames1, transform
         writeVideo(video, tile);
     end
     close(video);
-    disp('Video saved');
+    disp('********** Video saved **********');
     toc;
 end
 
