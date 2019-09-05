@@ -49,7 +49,7 @@ mask = createMask(cellcore_image, scaling_factor, false);
 [optimizer, metric] = imregconfig('monomodal');
 optimizer.MaximumStepLength = 0.01;
 optimizer.MaximumIterations = 100;
-TF_reference = "FirstFrame"; 
+TF_reference = "PreviousFrame"; 
 disp('********** Affine Transformations 1 **********')
 [tfFrames1, tf1] = transformFrames(frames, optimizer, metric, TF_reference);
 
@@ -61,7 +61,7 @@ disp('********** Affine Transformations 2 **********')
 [tfFrames2, tf2] = transformFrames(tfFrames1, optimizer2, metric2, TF_reference);
 
 % Save visualized result movie
-videoname = char(join(['Check_',experimentName,'_test'], ''));
+videoname = char(join(['Check_',experimentName,'_test_fullRes'], ''));
 visualizePipeline(frames, mask, tfFrames1, tfFrames2, videoname);
 
 

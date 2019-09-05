@@ -30,13 +30,14 @@ function [transformed_frames, tf] = transformFrames(frames, ...
     
     for ii = 2 : length(frames)
         if tfReference == "PreviousFrame"
+            tftemp = tf(1);
             for jj = ii:-1:2
-                transformed_frames(ii).img = imwarp(...
-                    transformed_frames(ii).img, ...
-                    tf(jj), ...
-                    'OutputView',imref2d(size(frames(ii).img)));
+                tftemp = combine_affine2d_tf(tftemp, tf(jj));
             end
-            
+            transformed_frames(ii).img = imwarp(...
+                transformed_frames(ii).img, ...
+                tftemp, ...
+                'OutputView',imref2d(size(frames(ii).img)));
         % Otherwise all frames are transformed to the base frame
         else
             transformed_frames(ii).img = imwarp(...
@@ -47,4 +48,10 @@ function [transformed_frames, tf] = transformFrames(frames, ...
     end
     disp('TransformFrames: Stage 2 complete. Images transformed.')
     toc;
+end
+
+function tfout = combine_affine2d_tf(tf1, tf2)
+    tfout = tf1;
+    tfout.T(1:2,1:2) = tf1.T(1:2,1:2) * tf2.T(1:2,1:2); % Rotation
+    tfout.T(3, 1:2) = tf1.T(3, 1:2) + tf1.T(3, 1:2); % Translation
 end
