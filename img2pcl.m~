@@ -1,0 +1,17 @@
+function pcl = img2pcl(img)
+    % pcl with .pos(:, 1) x coordinates and .pos(:, 2) y coordinates
+    % pcl.val
+    size_x = size(img, 2);
+    size_y = size(img, 1);
+    L = size_x * size_y;
+    pcl = struct();
+    pcl.x = NaN(L, 1);
+    pcl.y = NaN(L, 1);
+    pcl.val = NaN(L, 1);
+    xvec = [];
+    for ii = 1:1:size_x 
+        xvec = [xvec; ones(size_y, 1).*ii];
+    end
+    pcl.x(:, 1) = xvec;
+    pcl.y(:, 2) = repmat(1:size_y, 1, size_x);
+end
