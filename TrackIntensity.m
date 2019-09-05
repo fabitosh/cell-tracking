@@ -29,7 +29,7 @@ toc;
 %% Downscale Images
 disp('********** Downscale Images **********'); tic
 
-scaling_factor = 0.1;
+scaling_factor = 0.2;
 cellcore_image = imresize(cellcore_image, scaling_factor);
 L = length(frames);
 frames_ds = struct();

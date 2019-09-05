@@ -33,6 +33,7 @@ function [transformed_frames, tf] = transformFrames(frames, ...
 %     pcl = struct('x', [], 'y', [], 'val', []);
     for ii = 2 : length(frames)
         if tfReference == "PreviousFrame"
+            disp('new ii loop');
             pcl = img2pcl(frames(ii).img);
             for jj = ii:-1:2
                 pcl = pcl_2d_tf(pcl, tf(jj));
@@ -59,15 +60,12 @@ function tfout = combine_affine2d_tf(tf1, tf2)
 end
 
 function pcl = pcl_2d_tf(pclIn, tf)
-    L = size(pclIn.val);
+    L = size(pclIn.val, 1);
     pcl = pclIn;
-    pcl.val = [];
-    for ii = 1:L
-        pos_new = [pclIn.x(ii), pclIn.y(ii), 1] * tf.T;
-        pcl(ii).x = pos_new(1);
-        pcl(ii).y = pos_new(2);
-        pcl(ii).val = pclIn.val(ii);
-    end
+%     pos_new = NaN(L, 3);
+    pos_new = [pclIn.x, pclIn.y, ones(L, 1)] * tf.T;
+    pcl.x = pos_new(:, 1);
+    pcl.y = pos_new(:, 2);
 end
 
 function I = pcl2img(x,y,z,numr,numc )
@@ -89,6 +87,7 @@ function I = pcl2img(x,y,z,numr,numc )
 %    ver 1.2: normalize pixel values to [0,1] (Jan. 2016)
 %-----------------------------------------------------------
 % depth calculation
+z = double(z);
 d = sqrt( x.^2 + y.^2 + z.^2);
 % grid construction
 yl = min(y); yr = max(y); zl = min(z); zr = max(z);
