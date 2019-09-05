@@ -27,9 +27,9 @@ frames = getFrames(video, 120, 210); %start 120, end 210
 toc;
 
 %% Downscale Images
-toc; disp('********** Downscale Images **********'); tic
+disp('********** Downscale Images **********'); tic
 
-scaling_factor = 0.2;
+scaling_factor = 0.1;
 cellcore_image = imresize(cellcore_image, scaling_factor);
 L = length(frames);
 frames_ds = struct();

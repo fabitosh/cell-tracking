@@ -25,21 +25,23 @@ function [transformed_frames, tf] = transformFrames(frames, ...
     disp('Affine Transformations between Frames found.')
     toc; tic;
     
-    %% Transform imported Images
-    transformed_frames = frames;
+    save('TempWS.mat')
     
+    %% Transform imported Images
+    load('TempWS.mat')
+    imgsize = size(frames(1).img);
+%     pcl = struct('x', [], 'y', [], 'val', []);
     for ii = 2 : length(frames)
         if tfReference == "PreviousFrame"
-            tftemp = tf(1);
+            pcl = img2pcl(frames(ii).img);
             for jj = ii:-1:2
-                tftemp = combine_affine2d_tf(tftemp, tf(jj));
+                pcl = pcl_2d_tf(pcl, tf(jj));
             end
-            transformed_frames(ii).img = imwarp(...
-                transformed_frames(ii).img, ...
-                tftemp, ...
-                'OutputView',imref2d(size(frames(ii).img)));
+            transformed_frames(ii).img = pcl2img(pcl.x, pcl.y, pcl.val, ...
+                                                 imgsize(1), imgsize(2));  
         % Otherwise all frames are transformed to the base frame
         else
+            transformed_frames(ii).img = frames(ii).img;
             transformed_frames(ii).img = imwarp(...
                 transformed_frames(ii).img, ...
                 tf(ii), ...
@@ -56,8 +58,17 @@ function tfout = combine_affine2d_tf(tf1, tf2)
     tfout.T(3, 1:2) = tf1.T(3, 1:2) + tf1.T(3, 1:2); % Translation
 end
 
+function pcl = pcl_2d_tf(pclIn, tf)
+    L = size(pclIn.val);
+    pcl = pclIn;
+    for ii = 1:L
+        pos_new = [pclIn.x(ii), pclIn.y(ii), 1] * tf.T;
+        pcl(ii).x = pos_new(1);
+        pcl(ii).y = pos_new(2);
+    end
+end
 
-function I = pointcloud2image( x,y,z,numr,numc )
+function I = pcl2img(x,y,z,numr,numc )
 % By: Vahid Behravan
 % This function converts a point cloud (given in x,y,z) to a gray scale image
 % We assume the ToF camera is alligned with 'x-axis' 
