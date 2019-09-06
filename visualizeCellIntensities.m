@@ -3,9 +3,7 @@ function visualizeCellIntensities(s)
     
     %% Plot intensity per blob over all frames
     for blob = 1:length(s)
-        if [s(blob,:).Mean] > 15
-            plot([s(blob,:).Mean], ':'); hold on
-        end
+        plot([s(blob,:).Mean], ':'); hold on
     end
     
     %% Plot the mean of all blobs
