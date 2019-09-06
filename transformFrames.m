@@ -2,7 +2,6 @@ function [transformed_frames, tf] = transformFrames(frames, ...
                                                     optimizer, metric, ...
                                                     tfReference)   
     %% Handle different inptus for tfReference
-    tic;
     if tfReference == "FirstFrame"
         ref = 1;
     end
@@ -12,6 +11,7 @@ function [transformed_frames, tf] = transformFrames(frames, ...
     end
 
     %% Find Affine Transformations between Frames
+    tic;
     for ii = 2 : length(frames)
         if tfReference == "PreviousFrame"
             ref = ii-1;
@@ -24,12 +24,9 @@ function [transformed_frames, tf] = transformFrames(frames, ...
     disp('TransformFrames: Stage 1 complete.') 
     disp('Affine Transformations between Frames found.')
     toc; 
-    
-    save('TempWS.mat')
-    
+        
     %% Transform imported Images
     tic;
-    load('TempWS.mat')
     imgsize = size(frames(1).img);
     transformed_frames(1).img = frames(1).img;
 %     pcl = struct('x', [], 'y', [], 'val', []);
@@ -50,7 +47,8 @@ function [transformed_frames, tf] = transformFrames(frames, ...
                 'OutputView',imref2d(size(frames(ii).img)));
         end
     end
-    disp('TransformFrames: Stage 2 complete. Images transformed.')
+    disp('TransformFrames: Stage 2 complete. Images transformed.'); 
+    toc;
 end
 
 function tfout = combine_affine2d_tf(tf1, tf2)
