@@ -5,7 +5,7 @@ datapath = '/Volumes/FabioWD/++CellTracking/data/';
 files = dir(strcat(datapath,'*.tf8'));
 L = length(files);
 
-for ii = 5:2:L
+for ii = 1:2:L
     %% Get corresponding Experiment Pair out of Dataset
     str = split(files(ii).name, "__");
     str2 = split(files(ii+1).name, "__");
@@ -33,7 +33,7 @@ for ii = 5:2:L
     clear rowHeadings; clear tf8frames; toc;
 
     %% Downscale Images
-    if true 
+    if false 
         disp('********** Downscale Images **********'); tic
         scaling_factor = 0.1; % Adaptable Parameter 
         cellcore_img = imresize(cellcore_img, scaling_factor);

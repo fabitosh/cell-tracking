@@ -10,7 +10,7 @@ function visualizePipeline(original_frames, cellcore_img, mask, transformed_fram
     %% Create and save video
     video = VideoWriter(name);
     open(video);
-    cellcore_img = labeloverlay(cellcore_img, mask, 'Colormap', [0,0.5,0.5],'Transparency',0.7);
+    cellcore_img = labeloverlay(cellcore_img, mask, 'Colormap', [0,0.5,0.5],'Transparency',0.6);
     for ii = 1:length(original_frames)        
         % Create tile out of base images
         original = intensity_normalization(original_frames(ii).img, mini, maxi);
