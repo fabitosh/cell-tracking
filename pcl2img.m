@@ -2,7 +2,7 @@ function I = pcl2img(pcl, ncols, nrows)
 %     xq = linspace(0, ncols);
 %     yq = linspace(0, nrows);
     [xq,yq] = meshgrid(1:ncols, 1:nrows);
-    vq = griddata(pcl.x, pcl.y, double(pcl.val), yq, xq);
+    vq = interp2(pcl.x, pcl.y, double(pcl.val), xq, yq);
     
 %     mesh(xq,yq,vq)
 %     hold on
