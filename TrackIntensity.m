@@ -17,25 +17,26 @@ frames = cell2struct(tf8frames, rowHeadings, 2);
 clear rowHeadings; clear tf8frames; toc;
 
 %% Downscale Images
-disp('********** Downscale Images **********'); tic
-scaling_factor = 0.2; % Adaptable Parameter 
-cellcore_img = imresize(cellcore_img, scaling_factor);
-L = length(frames);
-frames = struct();
-for ii = 1:L
-    frames(ii).img = imresize(frames(ii).img, scaling_factor);
+if true 
+    disp('********** Downscale Images **********'); tic
+    scaling_factor = 0.5; % Adaptable Parameter 
+    cellcore_img = imresize(cellcore_img, scaling_factor);
+    L = length(frames);
+    frames = struct();
+    for ii = 1:L
+        frames(ii).img = imresize(frames(ii).img, scaling_factor);
+    end
+    toc;
 end
-toc;
-%% Create Masks and get Frames
+%% Create Mask
 [mask, cellcore_img_scaled] = createMask(cellcore_img, scaling_factor, false);
-% Optional ToDo: Detect not-changing frames before action happens
 
-%% Two Stage Affine Frame Transform
+%% Find Affine Transformations between frames and revert frames to base frame
 [optimizer, metric] = imregconfig('monomodal');
 optimizer.MaximumStepLength = 0.01;
 optimizer.MaximumIterations = 100;
 TF_reference = "PreviousFrame"; 
-disp('********** Affine Transformations 1 **********')
+disp('********** Affine Transformations **********')
 [tfFrames1, tf1] = transformFrames(frames, optimizer, metric, TF_reference);
 
 %% Save visualized result movie
@@ -43,5 +44,9 @@ videoname = char(join(['Check_',experimentName,'_outnew'], ''));
 visualizePipeline(frames, cellcore_img_scaled, mask, tfFrames1, videoname);
 
 %% Compute and plot results
-cellIntensities = logMaskIntensities(mask, tfFrames1);
+[cellIntensities, meanArray] = logMaskIntensities(mask, tfFrames1);
+csvname = char(join(['CellIntensities_',experimentName,'.csv'], ''));
+csvwrite(csvname, meanArray); 
+% Rows: Frames, Cols: Blobs, Values: Averaged Intensity in Blob
+
 visualizeCellIntensities(cellIntensities)
