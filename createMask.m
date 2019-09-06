@@ -1,4 +1,4 @@
-function [mask] = createMask(input_image, scaling_factor, perform_watershed)
+function [mask, nuclei_im] = createMask(input_image, scaling_factor, perform_watershed)
     %% Parameter Handling
     if ~exist('perform_watershed','var')
         perform_watershed = false;

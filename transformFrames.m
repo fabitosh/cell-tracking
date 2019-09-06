@@ -2,7 +2,6 @@ function [transformed_frames, tf] = transformFrames(frames, ...
                                                     optimizer, metric, ...
                                                     tfReference)   
     %% Handle different inptus for tfReference
-    tic;
     if tfReference == "FirstFrame"
         ref = 1;
     end
@@ -12,6 +11,7 @@ function [transformed_frames, tf] = transformFrames(frames, ...
     end
 
     %% Find Affine Transformations between Frames
+    tic;
     for ii = 2 : length(frames)
         if tfReference == "PreviousFrame"
             ref = ii-1;
@@ -23,13 +23,12 @@ function [transformed_frames, tf] = transformFrames(frames, ...
     end
     disp('TransformFrames: Stage 1 complete.') 
     disp('Affine Transformations between Frames found.')
-    toc; tic;
-    
-    save('TempWS.mat')
-    
+    toc; 
+        
     %% Transform imported Images
-    load('TempWS.mat')
+    tic;
     imgsize = size(frames(1).img);
+    transformed_frames(1).img = frames(1).img;
 %     pcl = struct('x', [], 'y', [], 'val', []);
     for ii = 2 : length(frames)
         if tfReference == "PreviousFrame"
@@ -37,9 +36,9 @@ function [transformed_frames, tf] = transformFrames(frames, ...
             for jj = ii:-1:2
                 pcl = pcl_2d_tf(pcl, tf(jj));
             end
-            transformed_frames(ii).img = pcl2img(pcl, ...
-                                                 imgsize(1), imgsize(2));  
+            transformed_frames(ii).img = pcl2img(pcl, imgsize(1), imgsize(2));  
         % Otherwise all frames are transformed to the base frame
+        % pcl.x, pcl.y, pcl.val
         else
             transformed_frames(ii).img = frames(ii).img;
             transformed_frames(ii).img = imwarp(...
@@ -48,7 +47,8 @@ function [transformed_frames, tf] = transformFrames(frames, ...
                 'OutputView',imref2d(size(frames(ii).img)));
         end
     end
-    disp('TransformFrames: Stage 2 complete. Images transformed.')
+    disp('TransformFrames: Stage 2 complete. Images transformed.'); 
+    toc;
 end
 
 function tfout = combine_affine2d_tf(tf1, tf2)

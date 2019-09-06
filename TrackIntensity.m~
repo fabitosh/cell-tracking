@@ -21,11 +21,12 @@ disp('********** Downscale Images **********'); tic
 scaling_factor = 0.2; % Adaptable Parameter 
 cellcore_img = imresize(cellcore_img, scaling_factor);
 L = length(frames);
-frames = struct();
+frames_ds = struct();
 for ii = 1:L
-    frames(ii).img = imresize(frames(ii).img, scaling_factor);
+    frames_ds(ii).img = imresize(frames(ii).img, scaling_factor);
 end
-toc;
+frames = frames_ds;
+clear frames_ds; toc;
 %% Create Masks and get Frames
 [mask, cellcore_img_scaled] = createMask(cellcore_img, scaling_factor, false);
 % Optional ToDo: Detect not-changing frames before action happens
@@ -38,9 +39,11 @@ TF_reference = "PreviousFrame";
 disp('********** Affine Transformations 1 **********')
 [tfFrames1, tf1] = transformFrames(frames, optimizer, metric, TF_reference);
 
+
 %% Save visualized result movie
 videoname = char(join(['Check_',experimentName,'_outnew'], ''));
 visualizePipeline(frames, cellcore_img_scaled, mask, tfFrames1, videoname);
+
 
 %% Compute and plot results
 cellIntensities = logMaskIntensities(mask, tfFrames1);
