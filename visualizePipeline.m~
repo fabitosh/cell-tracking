@@ -4,6 +4,7 @@ function visualizePipeline(original_frames, cellcore_img, mask, transformed_fram
     % Convert images to doubles
     original_frames = double_imagestack(original_frames);
     transformed_frames1 = double_imagestack(transformed_frames1);
+    transformed_frames2 = double_imagestack(transformed_frames2);
     % Find Scaling Factors
     [mini, maxi] = get_intensitiy_extrema(original_frames); 
     
@@ -16,7 +17,7 @@ function visualizePipeline(original_frames, cellcore_img, mask, transformed_fram
         original = intensity_normalization(original_frames(ii).img, mini, maxi);
         tf1img = intensity_normalization(transformed_frames1(ii).img, mini, maxi);
         maskoverlay = labeloverlay(tf2img, mask, 'Colormap', [0,1,0.2],'Transparency',0.6);
-        tile = imtile({original, cellcore_img, tf1img, maskoverlay}, 'GridSize', [2 2]);
+        tile = imtile({original, maskoverlay,  tf1img}, 'GridSize', [2 2]);
         % Append tile frame to the video
         writeVideo(video, tile);
     end

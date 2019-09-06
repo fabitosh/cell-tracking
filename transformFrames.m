@@ -23,24 +23,25 @@ function [transformed_frames, tf] = transformFrames(frames, ...
     end
     disp('TransformFrames: Stage 1 complete.') 
     disp('Affine Transformations between Frames found.')
-    toc; tic;
+    toc; 
     
     save('TempWS.mat')
     
     %% Transform imported Images
+    tic;
     load('TempWS.mat')
     imgsize = size(frames(1).img);
+    transformed_frames(1).img = frames(1).img;
 %     pcl = struct('x', [], 'y', [], 'val', []);
     for ii = 2 : length(frames)
         if tfReference == "PreviousFrame"
-            disp('new ii loop');
             pcl = img2pcl(frames(ii).img);
             for jj = ii:-1:2
                 pcl = pcl_2d_tf(pcl, tf(jj));
             end
-            transformed_frames(ii).img = pcl2img(pcl.x, pcl.y, pcl.val, ...
-                                                 imgsize(1), imgsize(2));  
+            transformed_frames(ii).img = pcl2img(pcl, imgsize(1), imgsize(2));  
         % Otherwise all frames are transformed to the base frame
+        % pcl.x, pcl.y, pcl.val
         else
             transformed_frames(ii).img = frames(ii).img;
             transformed_frames(ii).img = imwarp(...
@@ -50,7 +51,6 @@ function [transformed_frames, tf] = transformFrames(frames, ...
         end
     end
     disp('TransformFrames: Stage 2 complete. Images transformed.')
-    toc;
 end
 
 function tfout = combine_affine2d_tf(tf1, tf2)

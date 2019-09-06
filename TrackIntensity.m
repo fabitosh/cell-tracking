@@ -7,23 +7,23 @@ experimentName = "08.01.2019_1_hTC_P268_p8_d5_+AA_S2";
 
 % For tif and avi files
 % experimentName = "p7d5S1";
-cellcore_image = imread(join([experimentName,'__1.tif'], ""));
-video = VideoReader(join([experimentName,'__2.avi'], "")); 
-frames = getFrames(video, 120, 210); %start 120, end 210
+% cellcore_image = imread(join([experimentName,'__1.tif'], ""));
+% video = VideoReader(join([experimentName,'__2.avi'], "")); 
+% frames = getFrames(video, 120, 210); %start 120, end 210
 
 % Import tf8
-% path = "/Users/fabiomeier/Documents/MATLAB/CellTracking/datastack1/";
-% filepath = char(join([path, experimentName, '__1.tf8'], ''));
-% cellcore = bfopen(filepath);
-% cellcore_image = cellcore{1, 1}{1, 1};
-% filepath = char(join([path, experimentName, '__2.tf8'], ''));
-% tf8frames = bfopen(filepath);
-% tf8frames = tf8frames{1,1};
-% rowHeadings = {'img', 'info'};
-% frames = cell2struct(tf8frames, rowHeadings, 2);
+path = "/Users/fabiomeier/Documents/MATLAB/CellTracking/datastack1/";
+filepath = char(join([path, experimentName, '__1.tf8'], ''));
+cellcore = bfopen(filepath);
+cellcore_image = cellcore{1, 1}{1, 1};
+filepath = char(join([path, experimentName, '__2.tf8'], ''));
+tf8frames = bfopen(filepath);
+tf8frames = tf8frames{1,1};
+rowHeadings = {'img', 'info'};
+frames = cell2struct(tf8frames, rowHeadings, 2);
 % frames = frames(120:210);
-% clear rowHeadings
-% clear tf8frames
+clear rowHeadings
+clear tf8frames
 toc;
 
 %% Downscale Images
@@ -53,18 +53,12 @@ TF_reference = "PreviousFrame";
 disp('********** Affine Transformations 1 **********')
 [tfFrames1, tf1] = transformFrames(frames, optimizer, metric, TF_reference);
 
-[optimizer2, metric2] = imregconfig('monomodal');
-optimizer2.MaximumStepLength = 0.01;
-optimizer2.MaximumIterations = 1;
-TF_reference = "FirstFrame";
-disp('********** Affine Transformations 2 **********')
-[tfFrames2, tf2] = transformFrames(tfFrames1, optimizer2, metric2, TF_reference);
 
-% Save visualized result movie
+%% Save visualized result movie
 videoname = char(join(['Check_',experimentName,'_test_fullRes'], ''));
-visualizePipeline(frames, mask, tfFrames1, tfFrames2, videoname);
+visualizePipeline(frames, cellcore, mask, tfFrames1, videoname);
 
 
 %% Compute and plot results
-cellIntensities = logMaskIntensities(mask, tfFrames2);
+cellIntensities = logMaskIntensities(mask, tfFrames1);
 visualizeCellIntensities(cellIntensities)
