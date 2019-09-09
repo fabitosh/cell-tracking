@@ -10,7 +10,7 @@ To import .tf8 Files: https://docs.openmicroscopy.org/bio-formats/5.7.0/develope
 Main Executable. Adjust following variables:
 
 ### Inputs
-* datapath: Where your experiments are stored. The folder should have two corresponding experiment files:
+* datapath: Where your experiments are stored. __Important: the datapath should end with a slash (/ MacOS or \ Windows).__ The folder should have two corresponding experiment files:
   * CellCore Image: ending with __1.tf8 
   * Video of the stretched cells: ending with __2.tf8
 * Optionally downscale all images by setting the if condition on line 36 to true.
