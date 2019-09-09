@@ -1,5 +1,5 @@
 # cell-tracking
-Takes an image highlighting cells and a video as input. Computes all affine transformations between the video frames and reverts them back onto the first frame. It then tracks the intensities of the detected cells over the course of the video. 
+Takes an image with highlighted cells and a video as input. Computes all affine transformations between the video frames and recursively reverts them back onto the first frame. It then tracks the intensities of the detected cells over the course of the video. 
 
 Developed and tested with MATLAB R2018b Student Version
 
