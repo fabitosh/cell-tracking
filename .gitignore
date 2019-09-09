@@ -10,6 +10,7 @@
 # Mac OS #
 ##########
 *.m~
+.DS_Store
 
 # Packages #
 ############
