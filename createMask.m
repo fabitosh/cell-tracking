@@ -19,7 +19,7 @@ function [mask, nuclei_im] = createMask(input_image, scaling_factor, perform_wat
     
     %% Smoothen image
     conv_nuclei_im = imgaussfilt(nuclei_im, 5*scaling_factor);
-    conv_nuclei_im = imtophat(conv_nuclei_im, strel('disk', 10*scaling_factor));
+    conv_nuclei_im = imtophat(conv_nuclei_im, strel('disk', uint8(10*scaling_factor)));
     thresh = graythresh(conv_nuclei_im);
     
     %% Binarize the image 
