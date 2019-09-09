@@ -11,7 +11,7 @@ for ii = 1:2:L
     str2 = split(files(ii+1).name, "__");
     experimentName = str(1);
     if ~strcmp(str(1), str2(1))
-        disp('Experiments ii and ii+1 do not match. Aborting')
+        disp('Experiment names ii and ii+1 do not match. Aborting')
         ii
         files(ii).name
         files(ii+1).name
@@ -33,7 +33,7 @@ for ii = 1:2:L
     clear rowHeadings; clear tf8frames; toc;
 
     %% Downscale Images
-    if false 
+    if false % if downscalign is desired, set to true. 
         disp('********** Downscale Images **********'); tic
         scaling_factor = 0.1; % Adaptable Parameter 
         cellcore_img = imresize(cellcore_img, scaling_factor);
@@ -55,13 +55,13 @@ for ii = 1:2:L
     [tfFrames1, tf1] = transformFrames(frames, optimizer, metric, TF_reference);
 
     %% Save visualized result movie
-    videoname = char(join(['Check_',experimentName,'_outnew'], ''));
+    videoname = char(join(['Check_',experimentName,'.avi'], ''));
     visualizePipeline(frames, cellcore_img_scaled, mask, tfFrames1, videoname);
 
     %% Compute and plot results
     [cellIntensities, meanArray] = logMaskIntensities(mask, tfFrames1);
     csvname = char(join(['CellIntensities_',experimentName,'.csv'], ''));
+    % Rows: Frames, Cols: Cell ID, Values: Averaged Intensity in Blob
     csvwrite(csvname, meanArray); 
-    % Rows: Frames, Cols: Blobs, Values: Averaged Intensity in Blob
 %     visualizeCellIntensities(cellIntensities)
 end

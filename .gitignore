@@ -7,6 +7,10 @@
 *.o
 *.so
 
+# Mac OS #
+##########
+*.m~
+
 # Packages #
 ############
 # it's better to unpack these files and commit the raw source
@@ -25,3 +29,11 @@
 *.mat
 *.tif
 *.avi
+*.csv
+
+# Folders #
+###########
+3Dnucleisegmentation/*
+bfmatlab/*
+datastack1/*
+pipelinetest/*
